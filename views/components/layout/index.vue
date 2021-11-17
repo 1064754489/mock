@@ -12,10 +12,11 @@
       <div class="em-layout__nav" v-show="pageAnimated">
         <Menu theme="dark" :active-name="pageKey" mode="horizontal">
           <div class="nav-logo" @click="$router.push('/')">
-            <img src="/public/images/easy-mock.png">
+            <!-- <img src="/public/images/easy-mock.png"> -->
+            <h2>Mock</h2>
           </div>
           <div class="nav-search">
-            <i-input v-model="searchValue" placeholder="Search Easy Mock" ref="search"></i-input>
+            <i-input v-model="searchValue" placeholder="Search Mock" ref="search"></i-input>
           </div>
           <Submenu name="1">
             <template slot="title">
@@ -42,32 +43,19 @@
             @click.native="$router.push('/dashboard')">
             <Icon type="ios-speedometer"></Icon> {{$t('c.layout.menu[2]')}}
           </Menu-item>
+          <!-- <Menu-item
+            name="/docs"
+            @click.native="$router.push('/docs')"
+          > -->
           <Menu-item
             name="/docs"
-            @click.native="$router.push('/docs')">
-            <Badge dot :count="readChangelog ? '0' : '1'">
+          >
               <Icon type="ios-book"></Icon> {{$t('c.layout.menu[3]')}}
-            </Badge>
           </Menu-item>
           <Submenu name="100">
             <template slot="title">
               <Icon type="egg"></Icon> {{$t('c.layout.menu[4][0]')}}
             </template>
-            <li
-              class="ivu-menu-item"
-              @click="open('https://github.com/easy-mock/easy-mock')">
-              <Icon type="link"></Icon> GitHub
-            </li>
-            <li
-              class="ivu-menu-item"
-              @click="open('https://github.com/easy-mock/easy-mock-cli')">
-              <Icon type="link"></Icon> {{$t('c.layout.menu[4][1]')}}
-            </li>
-            <li
-              class="ivu-menu-item"
-              @click="open('http://mockjs.com/examples.html')">
-              <Icon type="link"></Icon> {{$t('c.layout.menu[4][2]')}}
-            </li>
           </Submenu>
           <Submenu name="5" class="nav-avatar" v-show="userHeadImg">
             <template slot="title">

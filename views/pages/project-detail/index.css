@@ -142,6 +142,34 @@
   .ivu-table-cell .ivu-dropdown {
     margin-left: 5px;
   }
+
+  .detail-nav-container 
+  {
+    display: flex;
+    .classify-box {
+      margin-right: 10px;
+      background: #fff;
+      min-width: 130px;
+    }
+    .classify-header {
+      display: flex;
+      justify-content: space-between;
+      background: #f8f8f9;
+      height: 40px;
+      align-items: center;
+      padding: 0 10px;
+      & > p {
+        font-size: 15px;
+        font-weight: bold;
+      }
+    }
+    .add-classify {
+      cursor: pointer;
+    }
+    .add-classify:hover {
+      color: #2e8cf0;
+    }
+  }
 }
 
 @c mock-expand {

@@ -10,8 +10,8 @@ const mockUtil = require('../util/mock')
 const ft = require('../models/fields_table')
 const { UserProxy, ProjectProxy, MockProxy } = require('../proxy')
 
-const jwtSecret = config.get('jwt.secret')
-const jwtExpire = config.get('jwt.expire')
+const jwtSecret = config.get('jwt.secret') // jwt加密秘钥
+const jwtExpire = config.get('jwt.expire') // 过期时间
 
 async function createUser (name, password) {
   const user = await UserProxy.newAndSave(name, password)
@@ -83,6 +83,7 @@ module.exports = class UserController {
     let user = await UserProxy.getByName(name)
 
     /* istanbul ignore if */
+    // 连接ldap服务器 查询用户
     if (ldapUtil.enable) {
       let ldapClient = await ldapUtil.createClient()
       try {
@@ -101,6 +102,7 @@ module.exports = class UserController {
         ctx.body = ctx.util.refail('用户不存在')
         return
       }
+      // 验证密码是否正确
       verifyPassword = util.bcompare(password, user.password)
     }
 
@@ -109,6 +111,7 @@ module.exports = class UserController {
       return
     }
 
+    // 生成认证token
     user.token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: jwtExpire })
 
     ctx.body = ctx.util.resuccess(_.pick(user, ft.user))

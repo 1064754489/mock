@@ -45,6 +45,7 @@ const loading = {
   }
 }
 
+// 请求拦截器
 instance.interceptors.request.use((config) => {
   let token
   if (isClient) {
@@ -57,6 +58,7 @@ instance.interceptors.request.use((config) => {
   return config
 }, error => Promise.reject(error))
 
+// 响应拦截器
 instance.interceptors.response.use((res) => {
   const messageUnless = res.config.messageUnless || []
   const body = res.data
@@ -176,6 +178,13 @@ const dashboard = {
   getList: config => createAPI('/dashboard', 'get', config)
 }
 
+const classify = {
+  create: config => createAPI('/classify/create', 'post', config),
+  list: config => createAPI('/classify', 'get', config),
+  update: config => createAPI('/classify/update', 'post', config),
+  delete: config => createAPI('/classify/delete', 'post', config)
+}
+
 export {
   u,
   project,
@@ -183,5 +192,6 @@ export {
   util,
   group,
   dashboard,
-  initAPI
+  initAPI,
+  classify
 }

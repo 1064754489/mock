@@ -10,7 +10,8 @@ const {
   util,
   group,
   project,
-  dashboard
+  dashboard,
+  classify
 } = require('./controllers')
 const baseUtil = require('./util')
 const middleware = require('./middlewares')
@@ -65,3 +66,8 @@ exports.api = apiRouter
   .post('/mock/update', mock.update)
   .post('/mock/delete', mock.delete)
   .post('/mock/export', mock.exportAPI)
+
+  .post('/classify/create', classify.create)
+  .get('/classify', classify.list)
+  .post('/classify/update', classify.update)
+  .post('/classify/delete', classify.delete)

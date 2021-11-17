@@ -1,116 +1,116 @@
 # Base
-snippet em.base.boolean
+snippet mock.base.boolean
 	@boolean
-snippet em.base.natural
+snippet mock.base.natural
 	@natural(${1:60}, ${2:100})
-snippet em.base.integer
+snippet mock.base.integer
 	@integer(${1:60}, ${2:100})
-snippet em.base.float
+snippet mock.base.float
 	@float(${1:60}, ${2:100})
-snippet em.base.character
+snippet mock.base.character
 	@character(${1:'abcde'})
-snippet em.base.string
+snippet mock.base.string
 	@string(${1:7}, ${2:20})
-snippet em.base.range
+snippet mock.base.range
 	@range(${1:3}, ${2:7})
 # Date
-snippet em.date.date
+snippet mock.date.date
 	@date
-snippet em.date.time
+snippet mock.date.time
 	@time
-snippet em.date.datetime
+snippet mock.date.datetime
 	@datetime
-snippet em.date.now
+snippet mock.date.now
 	@now
 # Image
-snippet em.image.image
+snippet mock.image.image
 	@image(${1:'200x100'}, ${2:'#50B347'}, ${3:'#FFF'}, ${4:'EasyMock'})
-snippet em.image.dataImage
+snippet mock.image.dataImage
 	@dataImage(${1:'200x100'}, ${2:'EasyMock'})
 # Color
-snippet em.color.color
+snippet mock.color.color
 	@color
-snippet em.color.hex
+snippet mock.color.hex
 	@hex
-snippet em.color.rgb
+snippet mock.color.rgb
 	@rgb
-snippet em.color.rgba
+snippet mock.color.rgba
 	@rgba
-snippet em.color.hsl
+snippet mock.color.hsl
 	@hsl
 # Text
-snippet em.text.paragraph
+snippet mock.text.paragraph
 	@paragraph(${1:1}, ${2:3})
-snippet em.text.sentence
+snippet mock.text.sentence
 	@sentence(${1:3}, ${2:5})
-snippet em.text.word
+snippet mock.text.word
 	@word(${1:3}, ${2:5})
-snippet em.text.title
+snippet mock.text.title
 	@title(${1:3}, ${2:5})
-snippet em.text.cparagraph
+snippet mock.text.cparagraph
 	@cparagraph(${1:1}, ${2:3})
-snippet em.text.csentence
+snippet mock.text.csentence
 	@csentence(${1:3}, ${2:5})
-snippet em.text.cword
+snippet mock.text.cword
 	@cword(${1:'零一二三四五六七八九十'}, ${2:5}, ${3:7})
-snippet em.text.ctitle
+snippet mock.text.ctitle
 	@ctitle(${1:3}, ${2:5})
 # Name
-snippet em.name.first
+snippet mock.name.first
 	@first
-snippet em.name.last
+snippet mock.name.last
 	@last
-snippet em.name.name
+snippet mock.name.name
 	@name
-snippet em.name.cfirst
+snippet mock.name.cfirst
 	@cfirst
-snippet em.name.clast
+snippet mock.name.clast
 	@clast
-snippet em.name.cname
+snippet mock.name.cname
 	@cname
 # Web
-snippet em.web.url
+snippet mock.web.url
 	@url
-snippet em.web.domain
+snippet mock.web.domain
 	@domain
-snippet em.web.protocol
+snippet mock.web.protocol
 	@protocol
-snippet em.web.tld
+snippet mock.web.tld
 	@tld
-snippet em.web.email
+snippet mock.web.email
 	@email
-snippet em.web.ip
+snippet mock.web.ip
 	@ip
 # Address
-snippet em.address.region
+snippet mock.address.region
 	@region
-snippet em.address.province
+snippet mock.address.province
 	@province
-snippet em.address.city
+snippet mock.address.city
 	@city(${1:true})
-snippet em.address.county
+snippet mock.address.county
 	@county(${1:true})
-snippet em.address.zip
+snippet mock.address.zip
 	@zip
 # Helper
-snippet em.helper.capitalize
+snippet mock.helper.capitalize
 	@capitalize(${1:'hello'})
-snippet em.helper.upper
+snippet mock.helper.upper
 	@upper(${1:'hello'})
-snippet em.helper.lower
+snippet mock.helper.lower
 	@lower(${1:'HELLO'})
-snippet em.helper.pick
+snippet mock.helper.pick
 	@pick(['a', 'e', 'i', 'o', 'u'])
-snippet em.helper.shuffle
+snippet mock.helper.shuffle
 	@shuffle(['a', 'e', 'i', 'o', 'u'])
 # Miscellaneous
-snippet em.miscellaneous.guid
+snippet mock.miscellaneous.guid
 	@guid
-snippet em.miscellaneous.id
+snippet mock.miscellaneous.id
 	@id
-snippet em.miscellaneous.increment
+snippet mock.miscellaneous.increment
 	@increment(${1:1000})
-snippet em.demo.all
+snippet mock.demo.all
 	{
 	  "base": {
 	    "range": "@range(3, 7)",
@@ -183,3 +183,8 @@ snippet em.demo.all
 	    "increment": "@increment(1000)"
 	  }
 	}
+#add
+snippet mock.demo.base
+ {
+   "message": "success"
+ }

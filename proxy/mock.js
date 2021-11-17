@@ -25,11 +25,13 @@ module.exports = class MockProxy {
     }, {
       $set: {
         url: mock.url,
+        name: mock.name,
         mode: mock.mode,
         method: mock.method,
         parameters: mock.parameters,
         description: mock.description,
-        response_model: mock.response_model
+        response_model: mock.response_model,
+        classify: mock.classify
       }
     })
   }

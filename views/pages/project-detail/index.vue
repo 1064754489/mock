@@ -34,7 +34,7 @@
             </Col>
             <Col span="5">
               <div>
-                <img :src="group ? '/public/images/group-default.png' : project.user.head_img" />
+                <img :src="group ? '/public/images/group-default.png' :project.user.head_img" />
                 <p class="author">{{group ? group.name : project.user.nick_name}}</p>
               </div>
             </Col>
@@ -67,12 +67,34 @@
             </Col>
           </Row>
         </div>
-        <Table
+        <div class="detail-nav-container">
+          <div class="classify-box">
+            <div class="classify-header">
+              <p>接口分类</p>
+              <Icon type="android-add-circle" class="add-classify" size="20" @click.native="addClassifyDialog = true"></Icon>
+            </div>
+            <Tree class="classify-tree" :data="classifyData" :render="renderContent" @on-select-change="handleClassifyChange"></Tree>
+          </div>
+          <Table
           border
           :columns="columns"
           :data="list"
           @on-selection-change="selectionChange"
-          :highlight-row="true"></Table>
+          :highlight-row="true"
+          />
+        </div>
+        <Modal
+          v-model="addClassifyDialog" 
+          title="新增分类"
+          @on-ok="handleAddClassify"
+          @on-cancel="addClassifyDialog = false"
+        >
+          <Form :model="form" :label-width="80">
+            <Form-item label="分类名">
+              <Input v-model="form.name" placeholder="请输入"></Input>
+            </Form-item>
+          </Form>
+      </Modal>
       </div>
     </transition>
   </div>
@@ -89,6 +111,8 @@ import debounce from 'lodash/debounce'
 import * as api from '../../api'
 import Project from '../new/project'
 import MockExpand from './mock-expand'
+
+import TreeRender from './classify-tree/tree-render.vue'
 
 export default {
   name: 'projectDetail',
@@ -133,6 +157,7 @@ export default {
           }
         },
         { type: 'selection', width: 60, align: 'center' },
+        { title: '名称', width: 120, ellipsis: true, key: 'name' },
         {
           title: 'Method',
           width: 110,
@@ -160,8 +185,8 @@ export default {
             </tag>
           }
         },
-        { title: 'URL', width: 420, ellipsis: true, sortable: true, key: 'url' },
-        { title: this.$t('p.detail.columns[0]'), ellipsis: true, key: 'description' },
+        { title: 'URL', width: 320, ellipsis: true, sortable: true, key: 'url' },
+        // { title: this.$t('p.detail.columns[0]'), ellipsis: true, key: 'description' },
         {
           title: this.$t('p.detail.columns[1]'),
           key: 'action',
@@ -187,17 +212,25 @@ export default {
             )
           }
         }
-      ]
+      ],
+      addClassifyDialog: false,
+      form: {
+        name: ''
+      },
+      selectedClassify: ''
     }
   },
   asyncData ({ store, route }) {
     store.commit('mock/INIT_REQUEST')
-    return store.dispatch('mock/FETCH', route)
+    return store.dispatch('mock/FETCH', {route})
   },
   mounted () {
     this.$on('query', debounce((keywords) => {
       this.keywords = keywords
     }, 500))
+
+    // this.getClassifiesList()
+    this.$store.dispatch('classify/FETCH', this.projectId)
   },
   computed: {
     project () {
@@ -225,6 +258,12 @@ export default {
     },
     group () {
       return this.project.group
+    },
+    projectId () {
+      return this.$route.params.id
+    },
+    classifyData () {
+      return this.$store.state.classify.list || []
     }
   },
   methods: {
@@ -320,6 +359,7 @@ export default {
       this.$store.dispatch('project/WORKBENCH', this.project.extend)
     },
     clone (mock) {
+      console.log('mock', mock)
       this.$store.dispatch('mock/CREATE', {
         route: this.$route,
         ...mock,
@@ -337,6 +377,80 @@ export default {
       } else {
         this.$router.push(`/editor/${this.project._id}`)
       }
+    },
+    handleClassifyChange (classify) {
+      console.log('change-classify', classify)
+    },
+    renderContent (h, {root, node, data}) {
+      let that = this
+      return h(TreeRender, {
+        props: {
+          treeRoot: root,
+          treeNode: node,
+          treeData: data,
+          selected: that.selectedClassify
+        },
+        on: {
+          handleClick: (d) => that.handleClick(d),
+          nodeEdit: (r, n, d) => that.handleEdit(r, n, d),
+          nodeDel: (r, n, d) => that.handleDelete(r, n, d),
+          nodeAfterEdit: (r, n, d) => that.handleAfterEdit(r, n, d)
+        }
+      })
+    },
+    handleClick (classify) {
+      this.selectedClassify = classify.nodeKey
+      this.$store.commit('mock/INIT_PAGEINDEX')
+      this.$store.dispatch('mock/FETCH', {route: this.$route, classifyId: classify.id}).then(res => {
+      })
+    },
+    // 编辑后，input框失去焦点
+    handleAfterEdit (r, n, d) {
+      console.log('change-after', d)
+      this.$store.dispatch('classify/UPDATE', {newName: d.title || '未命名', projectId: this.projectId, id: d.id})
+        .then(res => {
+          if (res.data.success) {
+            this.$Message.success('修改成功！')
+          }
+        })
+    },
+    // 编辑中，input框得到焦点
+    handleEdit (r, n, d) {
+      console.log('change-ing', d)
+    },
+    saveOrUpdateColumn (column) {
+      this.axios.request('POST', '你的接口', column).then((response) => {
+        let status = response.status
+        if (status === 200) {
+          // 完成增或者改操作后进行一次查询
+          this.initTreeList()
+        } else {
+        // 提示错误
+          let errorMsg = '[' + response.errorCode + ']:' + response.errorMsg
+          this.$Notice.error({
+            title: '错误',
+            desc: errorMsg,
+            duration: 5
+          })
+        }
+      })
+    },
+    handleDelete (r, n, d) {
+      console.log('delete', d)
+      this.$store.dispatch('classify/DELETE', {id: d.id, projectId: this.projectId})
+        .then(res => {
+          if (res.data.success) {
+            this.$Message.success('删除成功！')
+          }
+        })
+    },
+    handleAddClassify () {
+      this.$store.dispatch('classify/CREATE', { name: this.form.name, projectId: this.projectId }).then(res => {
+        if (res.data.success) {
+          this.$Message.success('创建成功！')
+          this.addClassifyDialog = false
+        }
+      })
     }
   },
   components: {
@@ -344,3 +458,14 @@ export default {
   }
 }
 </script>
+<style lang="postcss">
+  .classify-box {
+    border: solid 1px#dddee1;
+     li:hover {
+      background-color: #eaf4fe;
+    }
+    .classify-tree {
+      padding-right: 10px;
+    }
+  }
+</style>

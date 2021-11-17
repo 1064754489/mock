@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const config = require('config')
 
 mongoose.Promise = global.Promise
+// 连接数据库
 mongoose.connect(config.get('db'), {
   useMongoClient: true,
   poolSize: 20
@@ -17,6 +18,7 @@ mongoose.connect(config.get('db'), {
 
 module.exports = {
   User: require('./user'),
+  Classify: require('./classify'),
   Mock: require('./mock'),
   Group: require('./group'),
   Project: require('./project'),

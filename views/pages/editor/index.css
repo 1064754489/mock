@@ -18,7 +18,11 @@
   .em-editor__editor {
     overflow: hidden;
     display: flex;
-    flex-direction: column;
+    flex-direction: inherit;
+
+    .ace_editor {
+      width: 50%;
+    }
 
     & > div {
       height: 100%;

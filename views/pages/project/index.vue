@@ -65,11 +65,12 @@
                 <div class="project-url">{{item.url}}</div>
                 <div class="project-member" v-if="page.type === 0">
                   <img :src="item.user.head_img">
-                  <img
+                  <template v-for="(img, i) in item.members">
+                    <img
                     :src="img.head_img"
-                    v-for="(img, i) in item.members"
                     v-if="i < 5"
                     :key="i">
+                  </template>
                 </div>
                 <Button-group class="project-control">
                   <Button type="ghost" icon="link" :title="$t('p.project.control[0]')" class="copy-url" @click="clip(item)"></Button>

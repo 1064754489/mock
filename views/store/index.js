@@ -9,6 +9,7 @@ import group from './modules/group'
 import project from './modules/project'
 import dashboard from './modules/dashboard'
 import wallpaper from './modules/wallpaper'
+import classify from './modules/classify'
 
 Vue.use(Vuex)
 
@@ -86,6 +87,12 @@ export function createStore () {
           url: ''
         },
         ...wallpaper
+      },
+      classify: {
+        state: {
+          list: []
+        },
+        ...classify
       }
     }
   })

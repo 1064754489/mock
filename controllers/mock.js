@@ -53,11 +53,13 @@ module.exports = class MockController {
 
   static async create (ctx) {
     const uid = ctx.state.user.id
+    const name = ctx.checkBody('name').notEmpty().value
     const mode = ctx.checkBody('mode').notEmpty().value
     const projectId = ctx.checkBody('project_id').notEmpty().value
-    const description = ctx.checkBody('description').notEmpty().value
+    const description = ctx.checkBody('description').empty().value
     const url = ctx.checkBody('url').notEmpty().match(/^\/.*$/i, 'URL 必须以 / 开头').value
     const method = ctx.checkBody('method').notEmpty().toLow().in(['get', 'post', 'put', 'delete', 'patch']).value
+    const classify = ctx.checkBody('classify').empty().value
 
     if (ctx.errors) {
       ctx.body = ctx.util.refail(null, 10001, ctx.errors)
@@ -87,7 +89,9 @@ module.exports = class MockController {
       description,
       method,
       url,
-      mode
+      mode,
+      name,
+      classify
     })
 
     await redis.del('project:' + projectId)
@@ -100,11 +104,13 @@ module.exports = class MockController {
    */
 
   static async list (ctx) {
+    console.log('js')
     const uid = ctx.state.user.id
     const keywords = ctx.query.keywords
     const projectId = ctx.checkQuery('project_id').notEmpty().value
     const pageSize = ctx.checkQuery('page_size').empty().toInt().gt(0).default(defPageSize).value
     const pageIndex = ctx.checkQuery('page_index').empty().toInt().gt(0).default(1).value
+    const classify = ctx.checkQuery('classify').empty().value
 
     if (ctx.errors) {
       ctx.body = ctx.util.refail(null, 10001, ctx.errors)
@@ -118,6 +124,10 @@ module.exports = class MockController {
     }
 
     const where = { project: projectId }
+
+    if (classify) {
+      where.classify = classify
+    }
 
     if (keywords) {
       const keyExp = new RegExp(keywords)
@@ -161,6 +171,8 @@ module.exports = class MockController {
     const description = ctx.checkBody('description').notEmpty().value
     const url = ctx.checkBody('url').notEmpty().match(/^\/.*$/i, 'URL 必须以 / 开头').value
     const method = ctx.checkBody('method').notEmpty().toLow().in(['get', 'post', 'put', 'delete', 'patch']).value
+    const name = ctx.checkBody('name').notEmpty().value
+    const classify = ctx.checkBody('classify').empty().value
 
     if (ctx.errors) {
       ctx.body = ctx.util.refail(null, 10001, ctx.errors)
@@ -180,6 +192,8 @@ module.exports = class MockController {
     api.mode = mode
     api.method = method
     api.description = description
+    api.name = name
+    api.classify = classify
 
     const existMock = await MockProxy.findOne({
       _id: { $ne: api.id },
@@ -231,14 +245,14 @@ module.exports = class MockController {
 
     if (!api) ctx.throw(404)
 
-    Mock.Handler.function = function (options) {
-      const mockUrl = api.url.replace(/{/g, ':').replace(/}/g, '') // /api/{user}/{id} => /api/:user/:id
-      options.Mock = Mock
-      options._req = ctx.request
-      options._req.params = util.params(mockUrl, mockURL)
-      options._req.cookies = ctx.cookies.get.bind(ctx)
-      return options.template.call(options.context.currentContext, options)
-    }
+    // Mock.Handler.function = function (options) {
+    //   const mockUrl = api.url.replace(/{/g, ':').replace(/}/g, '') // /api/{user}/{id} => /api/:user/:id
+    //   options.Mock = Mock
+    //   options._req = ctx.request
+    //   options._req.params = util.params(mockUrl, mockURL)
+    //   options._req.cookies = ctx.cookies.get.bind(ctx)
+    //   return options.template.call(options.context.currentContext, options)
+    // }
 
     if (/^http(s)?/.test(api.mode)) { // 代理模式
       const url = nodeURL.parse(api.mode.replace(/{/g, ':').replace(/}/g, ''), true)

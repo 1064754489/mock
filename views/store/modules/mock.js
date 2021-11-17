@@ -15,6 +15,9 @@ export default {
       state.project = {}
       state.list = []
     },
+    INIT_PAGEINDEX (state) {
+      state.pageIndex = 1
+    },
     SET_REQUEST_PARAMS (state, payload) {
       state.keywords = payload.keywords || state.keywords
       state.pageIndex = payload.pageIndex || state.pageIndex
@@ -25,13 +28,14 @@ export default {
     }
   },
   actions: {
-    FETCH ({commit, state, rootState}, route) {
+    FETCH ({commit, state, rootState}, {route, classifyId}) {
       return api.mock.getList({
         params: {
           project_id: route.params.id,
           page_size: 2000, // 不考虑接口分页
           page_index: state.pageIndex,
-          keywords: state.keywords
+          keywords: state.keywords,
+          classify: classifyId || ''
         }
       }).then((res) => {
         if (res.data.success) {
@@ -42,9 +46,10 @@ export default {
         }
       })
     },
-    CREATE ({commit, dispatch}, {route, mode, description, url, method}) {
+    CREATE ({commit, dispatch}, {route, name, mode, description, url, method}) {
       return api.mock.create({
         data: {
+          name,
           mode,
           url,
           method,
