@@ -5,6 +5,22 @@
   flex-direction: column;
   height: 100vh;
 
+  .layout-menu-left {
+    background: #495060;
+    height: 100vh;
+  }
+
+  .ivu-menu {
+    width: unset !important;
+  }
+
+  .layout-nav-affix {
+    .ivu-affix {
+      background-color: #485060;
+      height: 100%;
+    }
+  }
+
   @d nav {
     background: #495060;
     img {
@@ -20,7 +36,6 @@
     }
 
     .nav-logo {
-      float: left;
       margin-left: var(--base-padding);
       cursor: pointer;
 
@@ -30,13 +45,11 @@
     }
 
     .nav-search {
-      float: left;
       width: 150px;
       margin: 0 var(--base-padding);
     }
 
     .nav-avatar {
-      float: right;
 
       img {
         border-radius: 50%;
@@ -73,6 +86,8 @@
 
   @d content {
     flex: 1;
+    /* overflow-y: auto;
+    height: 100vh; */
   }
 
   @d copyright {

@@ -4,7 +4,6 @@ export default {
   namespaced: true,
   mutations: {
     SET_VALUE (state, payload) {
-      console.log('payload', payload)
       state.list = payload || []
     },
     GET_CLASSIFIES (state) {

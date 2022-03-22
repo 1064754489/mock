@@ -35,7 +35,7 @@
 
   @d login {
     display: block;
-    left: 50%;
+    left: 75%;
     margin-top: -165px;
     margin-left: -150px;
     position: absolute;
@@ -46,6 +46,8 @@
     text-align: center;
     font-size: 17px;
     font-weight: 700;
+    background: radial-gradient(black, transparent);
+    padding: 35px 20px;
 
     img {
       width: 230px;
@@ -53,8 +55,10 @@
     }
 
     button {
-      height: 45px;
       margin: 30px 0 20px 0;
+      border-color: #fff;
+      color: #476cb1;
+      font-size: 21px;
     }
 
     input {
@@ -62,11 +66,16 @@
       font-weight: 400;
     }
 
+    .login-form {
+      margin-top: 30px
+    }
+
     input,
     input:hover,
     input:focus {
-      border-color: #fff;
       box-shadow: none;
+      background: radial-gradient(#30272700, transparent);
+      color: #fff;
     }
   }
 

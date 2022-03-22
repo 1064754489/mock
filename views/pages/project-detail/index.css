@@ -147,9 +147,13 @@
   {
     display: flex;
     .classify-box {
+      height: 100%;
       margin-right: 10px;
       background: #fff;
       min-width: 130px;
+      ul {
+        font-size: 14px !important;
+      }
     }
     .classify-header {
       display: flex;
@@ -168,6 +172,9 @@
     }
     .add-classify:hover {
       color: #2e8cf0;
+    }
+    .ivu-table-wrapper {
+      flex: 1
     }
   }
 }

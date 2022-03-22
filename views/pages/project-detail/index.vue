@@ -67,22 +67,26 @@
             </Col>
           </Row>
         </div>
-        <div class="detail-nav-container">
-          <div class="classify-box">
-            <div class="classify-header">
-              <p>接口分类</p>
-              <Icon type="android-add-circle" class="add-classify" size="20" @click.native="addClassifyDialog = true"></Icon>
+        <Row class="detail-nav-container">
+          <Col span="5">
+            <div class="classify-box">
+              <div class="classify-header">
+                <p>接口分类</p>
+                <Icon type="android-add-circle" class="add-classify" size="20" @click.native="addClassifyDialog = true"></Icon>
+              </div>
+              <Tree class="classify-tree" :data="classifyData" :render="renderContent"></Tree>
             </div>
-            <Tree class="classify-tree" :data="classifyData" :render="renderContent" @on-select-change="handleClassifyChange"></Tree>
-          </div>
-          <Table
-          border
-          :columns="columns"
-          :data="list"
-          @on-selection-change="selectionChange"
-          :highlight-row="true"
-          />
-        </div>
+          </Col>
+          <Col span="19">
+            <Table
+            border
+            :columns="columns"
+            :data="list"
+            @on-selection-change="selectionChange"
+            :highlight-row="true"
+            />
+          </Col>
+        </Row>
         <Modal
           v-model="addClassifyDialog" 
           title="新增分类"
@@ -185,8 +189,8 @@ export default {
             </tag>
           }
         },
-        { title: 'URL', width: 320, ellipsis: true, sortable: true, key: 'url' },
-        // { title: this.$t('p.detail.columns[0]'), ellipsis: true, key: 'description' },
+        { title: 'URL', ellipsis: true, sortable: true, key: 'url' },
+        { title: this.$t('p.detail.columns[0]'), ellipsis: true, key: 'description' },
         {
           title: this.$t('p.detail.columns[1]'),
           key: 'action',
@@ -465,7 +469,14 @@ export default {
       background-color: #eaf4fe;
     }
     .classify-tree {
-      padding-right: 10px;
+      padding: 0 10px;
+      padding-bottom: 20px;
+    }
+    li:hover {
+      background-color: #fff;
+    }
+    li {
+      margin: 0 !important;
     }
   }
 </style>

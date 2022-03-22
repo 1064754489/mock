@@ -6,8 +6,9 @@
       @blur="nodeEditPass(treeRoot,treeNode,treeData)"/>
     </span>
      <template v-else>
-         <span class="tree-title" :title="treeData.title" :class="{ selected: selected === treeData.nodeKey}" @click="handleClick(treeData)">{{treeData.title}}</span>
-        <span class="more-icon-box" v-if="treeData.id" v-show="!isEdit">
+       <div class="title-box">
+         <div class="tree-title" :title="treeData.title" :class="{ selected: selected === treeData.nodeKey}" @click="handleClick(treeData)">{{treeData.title}}</div>
+        <div class="more-icon-box" v-if="treeData.id" v-show="!isEdit">
           <Poptip placement="right" trigger="hover">
             <Icon class="more-icon" type="more" ></Icon>
             <div class="click-box" slot="content">
@@ -15,7 +16,8 @@
               <i-button class="delete" type="text" size="small" icon="md-close" @click="nodeDel(treeRoot,treeNode,treeData)">删除</i-button>
             </div>
         </Poptip>
-        </span>
+        </div>
+       </div>
     </template>
   </span>
 </template>
@@ -95,5 +97,10 @@ export default {
 }
 .delete {
   color: red;
+}
+.title-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

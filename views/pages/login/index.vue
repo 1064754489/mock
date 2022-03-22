@@ -4,14 +4,13 @@
       <div class="em-index__login" v-if="page === 0">
         <!-- <img src="/public/images/easy-mock.png"> -->
         <h1>mock</h1>
-        <p>{{$tc('p.login.description', 1)}}</p>
-        <p>{{$tc('p.login.description', 2)}}</p>
+        <!-- <p>{{$tc('p.login.description', 1)}}</p>
+        <p>{{$tc('p.login.description', 2)}}</p> -->
         <transition name="fadeUp" mode="out-in">
-          <i-button type="primary" long @click.stop="start" v-if="!isLogin" key="start">{{$tc('p.login.form.button', 1)}}</i-button>
-          <i-button type="success" long @click.stop="login" v-else key="login">{{$tc('p.login.form.button', 2)}}</i-button>
+          <!-- <i-button type="primary" long @click.stop="start" v-if="!isLogin" key="start">{{$tc('p.login.form.button', 1)}}</i-button> -->
         </transition>
         <transition name="fadeLeft">
-          <div v-show="isLogin" v-click-outside="onClickOutside">
+          <div v-show="!isLogin" class="login-form" v-click-outside="onClickOutside">
             <i-input size="large"
               v-if="ldap"
               :placeholder="$tc('p.login.form.placeholder', 2)"
@@ -25,6 +24,7 @@
               type="password" v-model="password" @on-enter="login"></i-input>
           </div>
         </transition>
+          <i-button type="ghost" icon="log-in" @click.stop="login"  key="login"></i-button>
       </div>
     </transition>
 

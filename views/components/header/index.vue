@@ -78,6 +78,7 @@ export default {
   },
   methods: {
     changeFixed (isFixed) {
+      console.log('isFixed', isFixed)
       this.isFixed = isFixed
     }
   }
